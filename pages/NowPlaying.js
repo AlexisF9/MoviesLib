@@ -8,17 +8,16 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
+import env from "../config/env";
 
 export default function NowPlaying({ navigation, route }) {
-  const API_KEY = "afe1e6229a323ab6b79aa116e601ff56";
-
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const getMovies = async () => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=fr-FR`
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${env.API_KEY}&language=fr-FR`
       );
       const json = await response.json();
       setData(json.results);
@@ -41,37 +40,30 @@ export default function NowPlaying({ navigation, route }) {
         data.map((item, index) => {
           return (
             <View key={index} style={styles.card}>
-              <View
+              <Image
+                source={{
+                  uri: "https://image.tmdb.org/t/p/original" + item.poster_path,
+                }}
                 style={{
-                  flex: 1,
-                  flexDirection: "row",
+                  width: 200,
+                  height: 300,
+                  borderRadius: 5,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 14,
+                  marginTop: 10,
                 }}
               >
-                <Image
-                  source={{
-                    uri:
-                      "https://image.tmdb.org/t/p/original" + item.poster_path,
-                  }}
-                  style={{ width: "50%", height: 200, borderRadius: 5 }}
-                />
-                <View style={{ marginLeft: 10 }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "bold",
-                      marginBottom: 10,
-                    }}
-                  >
-                    {item.original_title}
-                  </Text>
-                  <Text>Note : {item.vote_average}/10</Text>
-                  <Text>Sortie : {item.release_date}</Text>
-                </View>
-              </View>
+                {item.original_title}
+              </Text>
 
-              <View style={{ flex: 1 }}>
+              {/* <View style={{ flex: 1 }}>
                 <Text numberOfLines={3}>{item.overview}</Text>
-              </View>
+                <Text>Note : {item.vote_average}/10</Text>
+                <Text>Sortie : {item.release_date}</Text>
+              </View> */}
             </View>
           );
         })
@@ -82,10 +74,11 @@ export default function NowPlaying({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     flex: 1,
+    width: "100%",
+    padding: 20,
   },
   card: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
 });
