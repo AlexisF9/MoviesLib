@@ -92,9 +92,7 @@ export default function NowPlaying({ navigation, route }) {
                 >
                   <Image
                     source={{
-                      uri:
-                        "https://image.tmdb.org/t/p/original" +
-                        item.poster_path,
+                      uri: env.URL_PICTURE + item.poster_path,
                     }}
                     style={styles.image}
                   />
